@@ -37,6 +37,8 @@ app.listen(process.env.PORT, () => {
   console.log("Server started at PORT ", process.env.PORT);
 });
 
+app.use(cors());
+
 app.get("/", async (req, res) => {
   res.send(await getAllMovies());
 });
@@ -49,7 +51,6 @@ app.get("/movies/totalbookings", async (req, res) => {
 });
 //using the express middleware for every request and converting the data to json
 app.use(express.json());
-app.use(cors());
 
 //creating the hall
 app.post("/movies/create", async (req, res) => {
