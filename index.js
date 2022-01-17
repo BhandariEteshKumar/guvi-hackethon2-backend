@@ -2,7 +2,7 @@ import dotnev from "dotenv";
 import express, { request, response } from "express";
 import { MongoClient } from "mongodb";
 import { checkBooking } from "./checkBooking.js";
-import cros from "cors";
+import cors from "cors";
 import {
   insertData,
   findById,
@@ -49,7 +49,7 @@ app.get("/movies/totalbookings", async (req, res) => {
 });
 //using the express middleware for every request and converting the data to json
 app.use(express.json());
-app.use(cros());
+app.use(cors());
 
 //creating the hall
 app.post("/movies/create", async (req, res) => {
