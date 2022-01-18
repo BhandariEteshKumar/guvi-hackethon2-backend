@@ -1,7 +1,6 @@
 import dotnev from "dotenv";
 import express, { request, response } from "express";
 import { MongoClient } from "mongodb";
-import { checkBooking } from "./checkBooking.js";
 import cors from "cors";
 import {
   insertData,
@@ -27,6 +26,7 @@ dotnev.config();
 // creating the express server
 const app = express();
 app.use(cors());
+app.options("*", cors());
 //this method is initiated when we are on home page to retire some values
 
 // getting the mongodb connection url through env file and storing it
