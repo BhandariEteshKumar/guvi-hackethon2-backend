@@ -101,7 +101,11 @@ app.post("/movies/create", async (req, res) => {
   res.send(await insertData(req.body));
 });
 app.post("/create/:id", async (req, res) => {
-  res.send(await updateById(req.body));
+  try {
+    res.send(await updateById(req.body));
+  } catch {
+    res.send({ messege: "Not Updated" });
+  }
 });
 app.post("/theaters/:id", async (req, res) => {
   res.send(await updateTheater(req.params.id, req.body));
