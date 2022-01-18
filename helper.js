@@ -64,11 +64,11 @@ export async function getTheatersById(id) {
   return await client.db("b29wd").collection("theaters").findOne({ id: id });
 }
 
-export async function updateTheater(id, seats) {
+export async function updateTheater(id, name, seats) {
   return await client
     .db("b29wd")
     .collection("theaters")
-    .updateOne({ id: id }, { $set: { booked: seats } });
+    .updateOne({ name: name, movieId: +id }, { $set: { booked: seats } });
 }
 
 export async function deleteById(id) {

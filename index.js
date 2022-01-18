@@ -107,8 +107,9 @@ app.post("/create/:id", async (req, res) => {
     res.send({ messege: "Not Updated" });
   }
 });
-app.post("/theaters/:id", async (req, res) => {
-  res.send(await updateTheater(req.params.id, req.body));
+app.post("/theaters/:id/:name", async (req, res) => {
+  console.log(req.params.id);
+  res.send(await updateTheater(req.params.id, req.params.name, req.body));
 });
 app.post("/signup", async (req, res) => {
   res.send(await createUser(req.body));
