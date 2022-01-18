@@ -12,7 +12,16 @@ import {
   updateById,
   createUser,
   getBookings,
+  getAllUsers,
+  getUserByName,
+  getUserById,
+  getMovieById,
+  getTheaters,
+  getTheatersById,
+  updateTheater,
+  deleteById,
 } from "./helper.js";
+import jwt from "jsonwebtoken";
 
 dotnev.config();
 // creating the express server
@@ -39,47 +48,65 @@ app.listen(process.env.PORT, () => {
 
 app.use(cors());
 
-app.get("/", async (req, res) => {
+app.get("/home", async (req, res) => {
   res.send(await getAllMovies());
 });
-app.get("/halls/customers", async (req, res) => {
+app.get("/movies/customers", async (req, res) => {
   res.send(await getAllMovies());
 });
 
 app.get("/movies/totalbookings", async (req, res) => {
   res.send(await getBookings());
 });
+
+app.get("/movies/:id", async (req, res) => {
+  res.send(await getMovieById(req.params.id));
+});
+
+app.get("/theaters", async (req, res) => {
+  res.send(await getTheaters());
+});
+app.get("/movies/theaters/:id", async (req, res) => {
+  res.send(await getTheatersById(req.params.id));
+});
+
+app.delete("/movies", async (req, res) => {
+  res.send(await deleteMovies());
+});
+
+app.delete("/movies/:id", async (req, res) => {
+  res.send(deleteById(req.params.id));
+});
 //using the express middleware for every request and converting the data to json
 app.use(express.json());
 
+app.post("/login", async (req, res) => {
+  const data = await getAllUsers();
+  const { name, password } = req.body;
+  const user = await getUserByName(name);
+
+  if (!user) {
+    res.status(400).send({ messege: "Invalid credentials" });
+    return;
+  }
+  if (password !== user.password) {
+    res.status(400).send({ messege: "Invalid credentials" });
+    return;
+  }
+
+  const token = jwt.sign({ id: user._id }, process.env.SECERT_KEY);
+  res.send({ messege: "login successful", token: token });
+});
 //creating the hall
 app.post("/movies/create", async (req, res) => {
   res.send(await insertData(req.body));
 });
-app.post("/movies/create/:id", async (req, res) => {
-  res.send(await updateById(req.id, req.body));
+app.post("/create/:id", async (req, res) => {
+  res.send(await updateById(req.body));
+});
+app.post("/theaters/:id", async (req, res) => {
+  res.send(await updateTheater(req.params.id, req.body));
 });
 app.post("/signup", async (req, res) => {
   res.send(await createUser(req.body));
-});
-
-app.delete("/halls", async (req, res) => {
-  res.send(await deleteMovies());
-});
-
-app.post("/halls/bookroom", async (req, res) => {
-  const { RoomID, date, StartTime, EndTime } = req.body;
-  var start = new Date(date + " " + StartTime);
-  var end = new Date(date + " " + EndTime);
-  const data = await findById(RoomID);
-  if (data.Booking) {
-    let arr = data.Booking,
-      flag = true;
-    flag = checkBooking(arr, start, end, flag);
-    if (flag === false) {
-      res.send({ messege: "Already booked in the specificed time" });
-      return;
-    }
-  }
-  res.send(await update(RoomID, req.body));
 });
