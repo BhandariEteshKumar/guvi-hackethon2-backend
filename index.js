@@ -26,6 +26,7 @@ import jwt from "jsonwebtoken";
 dotnev.config();
 // creating the express server
 const app = express();
+app.use(cors());
 //this method is initiated when we are on home page to retire some values
 
 // getting the mongodb connection url through env file and storing it
@@ -45,8 +46,6 @@ export const client = await createConnection();
 app.listen(process.env.PORT, () => {
   console.log("Server started at PORT ", process.env.PORT);
 });
-
-app.use(cors());
 
 app.get("/home", async (req, res) => {
   res.send(await getAllMovies());
