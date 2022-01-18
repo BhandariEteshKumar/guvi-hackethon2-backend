@@ -9,7 +9,7 @@ export async function insertData(data) {
   return await client.db("b29wd").collection("movies").insertMany(data);
 }
 export async function updateById(seats) {
-  return await client.db("b29wd").collection("theaters").insertMany(seats);
+  return await client.db("b29wd").collection("theaters").insertOne(seats);
 }
 
 export async function findById(RoomID) {
