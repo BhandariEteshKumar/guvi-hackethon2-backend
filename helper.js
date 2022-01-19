@@ -74,3 +74,10 @@ export async function updateTheater(id, name, seats) {
 export async function deleteById(id) {
   return await client.db("b29wd").collection("movies").deleteOne({ id: id });
 }
+
+export async function deleteTheater(id, name) {
+  return await client
+    .db("b29wd")
+    .collection("theaters")
+    .deleteOne({ movieId: id, name: name });
+}

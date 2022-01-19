@@ -19,6 +19,7 @@ import {
   getTheatersById,
   updateTheater,
   deleteById,
+  deleteTheater,
 } from "./helper.js";
 import jwt from "jsonwebtoken";
 
@@ -75,6 +76,11 @@ app.delete("/movies", async (req, res) => {
 
 app.delete("/movies/:id", async (req, res) => {
   res.send(deleteById(req.params.id));
+});
+
+app.delete("/theater/:id/:name", async (req, res) => {
+  const id = +req.params.id;
+  res.send(await deleteTheater(id, req.params.name));
 });
 //using the express middleware for every request and converting the data to json
 app.use(express.json());
